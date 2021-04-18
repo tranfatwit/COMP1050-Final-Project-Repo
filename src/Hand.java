@@ -2,8 +2,7 @@ import java.util.ArrayList;
 import java.lang.StringBuilder;
 
 public class Hand extends HandAbstract {
-	Boolean canSplit = false;
-//	Boolean doubleDown = false;
+	
 	int total = 0;
 	int aceTotal = 0;
 	int finalTotal = -1;
@@ -20,7 +19,6 @@ public class Hand extends HandAbstract {
 	}
 	public void clearHand() {
 		hand.clear();
-		canSplit = false;
 		total = 0;
 		aceTotal = 0;
 		finalTotal = -1;
@@ -41,7 +39,6 @@ public class Hand extends HandAbstract {
 	public int getSize() {
 		return hand.size();
 	}
-
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < hand.size(); i++) {
@@ -50,7 +47,6 @@ public class Hand extends HandAbstract {
 				sb.append(", ");
 			}
 		}
-		
 		return sb.toString();
 	}
 	@Override
@@ -59,7 +55,6 @@ public class Hand extends HandAbstract {
 		total = 0;
 		aceTotal = 0;
 		
-
 		for(int i = 0; i < hand.size(); i++) {
 			if(hand.get(i).getValue() == 1) {
 				ace = true;
@@ -127,10 +122,7 @@ public class Hand extends HandAbstract {
 				finalTotal = total;
 				return "Total: " + Integer.toString(total);
 			}
-				
 		
-	
-	
 	}
 	
 }

@@ -13,20 +13,17 @@ public class Card {
 		this.suit = suit;
 		this.value = value;
 	}
-	
 	public String toString() {
 		return getValueName() + " of " + suit;
 	}
-	
 	public String getSuitName() {
 		return this.suit;
 	}
-	
 	public int getValue() {
 		return this.value;
 	}
-	
 	public String getValueName() {
+		
 		String valueName;
 		
 		if(value == 1) {
@@ -59,5 +56,4 @@ public class Card {
 		return valueName;
 	}
 	
-
 }

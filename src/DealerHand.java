@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class DealerHand extends HandAbstract {
+	
 	ArrayList<Card> hand = new ArrayList<>();
 	int total = 0;
 	int aceTotal = 0;
@@ -15,7 +16,6 @@ public class DealerHand extends HandAbstract {
 	public void clearHand() {
 		hand.clear();
 	}
-	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < hand.size(); i++) {
@@ -24,7 +24,6 @@ public class DealerHand extends HandAbstract {
 				sb.append(", ");
 			}
 		}
-		
 		return sb.toString();
 	}
 	@Override

@@ -23,6 +23,4 @@ public abstract class HandAbstract {
 	
 	abstract public String getTotal();
 	
-	
-	
 }

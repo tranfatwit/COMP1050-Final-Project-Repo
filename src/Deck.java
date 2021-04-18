@@ -30,7 +30,6 @@ public class Deck {
 		for (int i = 1; i <= 13; i++) {
 			deck[count++] = new Card(i,"Clubs");
 		}
-		
 	}
 /*
  * toString method for the class
@@ -50,28 +49,20 @@ public class Deck {
 	public void shuffle() {
 		
 		List<Card> list = Arrays.asList(deck);
-		
 		Collections.shuffle(list);
 		
 		for(int i = 0; i < list.size(); i ++) {
 			list.get(i);
 		}
-		
 		for(int i = 0; i < 52; i++) {
 			deck[i] = list.get(i);
 		}
 		
-		
-		
 	}
-	
 	public Card getCard() {
 		Card card = deck[counter];
 		counter++;
 		return card;
 	}
 	
-
-	
-
 }

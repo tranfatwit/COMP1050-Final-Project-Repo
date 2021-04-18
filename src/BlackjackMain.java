@@ -1,8 +1,5 @@
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,17 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 /**
@@ -51,26 +40,22 @@ public class BlackjackMain extends Application implements Initializable {
     @FXML
     private Text enterTxt;
     
-    
-    
 	BlackjackEvents newGame = new BlackjackEvents();
-	int eventCount = 0; //reset to event 2 and keep grabNames true, grabBets false, bet counter back to 0
+	int eventCount = 0;
 	boolean grabNames = false;
 	boolean grabBets = false;
 	int betCounter = 0;
 	int hitCounter = 0;
 	boolean first = true;
 
-	    
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 		Parent root = FXMLLoader.load(getClass().getResource("BlackjackGUI.fxml"));
 		Scene scene = new Scene(root);
-		primaryStage.setTitle("MyExampleApp");
+		primaryStage.setTitle("Blackjack");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
 		
 	}
 	
@@ -80,6 +65,7 @@ public class BlackjackMain extends Application implements Initializable {
 		enterBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				String txt;
 				txt = enterTxtField.getText();
 				
@@ -112,31 +98,42 @@ public class BlackjackMain extends Application implements Initializable {
 				} else if (eventCount == 2) {
 					
 					if(grabNames == false && first == true) {
+						
 						String msg = enterTxtField.getText();
 						newGame.playersArray.add(new Player(msg));
+						
 					}
+					
 					if((newGame.playersArray.size() == newGame.players)) {
+						
 						grabNames = true;
 						
 					}	
+					
 					if(grabBets == false && grabNames == true) {
 						
 						for(int i = 0; i < newGame.players; i++) {
+							
 							enterTxtArea.appendText("\n");
 							enterTxtArea.appendText(newGame.playersArray.get(i).name + ", how much do you want to bet? You have " + newGame.playersArray.get(i).money + " credits");
+							
 						}
 						
 						eventCount++;
 						first = false;
-					}	
+						
+					}
+					
 				} else if (eventCount == 3) {
 					
 					String msg = enterTxtField.getText();
 					
 					try {
-						newGame.playersArray.get(betCounter).hand.bet(Integer.parseInt(msg));	
-					} catch (NumberFormatException ex) {
 						
+						newGame.playersArray.get(betCounter).hand.bet(Integer.parseInt(msg));	
+						
+					} catch (NumberFormatException ex) {
+				
 					}
 					
 					betCounter++;
@@ -151,117 +148,110 @@ public class BlackjackMain extends Application implements Initializable {
 						enterTxtArea.appendText("The dealer's face up card is " + newGame.dealer.hand.get(0));
 						
 						for(int i = 0; i < newGame.playersArray.size(); i++) {
+							
 							enterTxtArea.appendText("\n");
 							enterTxtArea.appendText(newGame.playersArray.get(i).showHand());
 							enterTxtArea.appendText("\n");
 							enterTxtArea.appendText(newGame.playersArray.get(i).hand.getTotal());
 							
-							
-						
 						}
 						
 						for(int i = 0; i < newGame.playersArray.size(); i++) {
-						//	if(!newGame.playersArray.get(i).hand.blackjack) {
+						
 								enterTxtArea.appendText("\n");
 								enterTxtArea.appendText(newGame.playersArray.get(i).name + ", do you want to Hit (H) or Stand (S)?");
-						//	}
 							
 						}
 					
 					eventCount++;
 					
-					}		
+					}
+					
 				} else if (eventCount == 4) {
 					
 					String a = enterTxtField.getText();
 			
-						if( !newGame.playersArray.get(hitCounter).doneHitOrStand) {
+					if( !newGame.playersArray.get(hitCounter).doneHitOrStand) {
 							
-							if(newGame.playersArray.get(hitCounter).hand.finalTotal > 21) {
+						if(newGame.playersArray.get(hitCounter).hand.finalTotal > 21) {
 								
-								newGame.playersArray.get(hitCounter).hand.bust = true;
-								newGame.playersArray.get(hitCounter).doneHitOrStand = true;
-								hitCounter++;
+							newGame.playersArray.get(hitCounter).hand.bust = true;
+							newGame.playersArray.get(hitCounter).doneHitOrStand = true;
+							hitCounter++;
 								
-							} else if (newGame.playersArray.get(hitCounter).hand.finalTotal == 21) {
+						} else if (newGame.playersArray.get(hitCounter).hand.finalTotal == 21) {
 								
-								newGame.playersArray.get(hitCounter).doneHitOrStand = true;
-								hitCounter++;
+							newGame.playersArray.get(hitCounter).doneHitOrStand = true;
+							hitCounter++;
 								
-							} else if (a.equals("H") || a.equals("h")) {
+						} else if (a.equals("H") || a.equals("h")) {
 									
-										newGame.playersArray.get(hitCounter).hand.addCard(newGame.deck.getCard());
-										enterTxtArea.appendText("\n");
-										enterTxtArea.appendText(newGame.playersArray.get(hitCounter).showHand());
-										enterTxtArea.appendText("\n");
-										enterTxtArea.appendText(newGame.playersArray.get(hitCounter).hand.getTotal());
-							} else if(a.equals("S") || a.equals("s")) {
-									enterTxtArea.appendText("\n");
-									enterTxtArea.appendText(newGame.playersArray.get(hitCounter).name +" stands");
-									newGame.playersArray.get(hitCounter).doneHitOrStand = true;
-									hitCounter++;
-									//System.out.println("stand");
-								}
-								
-								
-						}	
-								
-								
-								
-								if((hitCounter == newGame.players) && (newGame.playersArray.get(hitCounter-1).doneHitOrStand = true)) {
-									eventCount++;
-									newGame.dealerEvents();
-									enterTxtArea.appendText("\n");
-									enterTxtArea.appendText("Dealer has: " + newGame.dealer.toString());
-									enterTxtArea.appendText("\n");
-									enterTxtArea.appendText(Integer.toString(newGame.dealer.finalTotal));
-									newGame.distributeBets();
-									
-									
-									for(int i = 0; i < newGame.playersArray.size(); i++) {
+							newGame.playersArray.get(hitCounter).hand.addCard(newGame.deck.getCard());
+							enterTxtArea.appendText("\n");
+							enterTxtArea.appendText(newGame.playersArray.get(hitCounter).showHand());
+							enterTxtArea.appendText("\n");
+							enterTxtArea.appendText(newGame.playersArray.get(hitCounter).hand.getTotal());
+							
+						} else if(a.equals("S") || a.equals("s")) {
+							
+							enterTxtArea.appendText("\n");
+							enterTxtArea.appendText(newGame.playersArray.get(hitCounter).name +" stands");
+							newGame.playersArray.get(hitCounter).doneHitOrStand = true;
+							hitCounter++;
 										
+						}
 										
-										if(newGame.playersArray.get(i).hand.result.equals("win")) {
-											
-											newGame.playersArray.get(i).addMoney(newGame.playersArray.get(i).hand.getBet());
-											enterTxtArea.appendText("\n");
-											enterTxtArea.appendText(newGame.playersArray.get(i).name + " has: " + newGame.playersArray.get(i).money);
-											
-										} 
-										
-										
-										else if(newGame.playersArray.get(i).hand.result.equals("lose")) {
-											
-											newGame.playersArray.get(i).minusMoney(newGame.playersArray.get(i).hand.getBet());
-											enterTxtArea.appendText("\n");
-											enterTxtArea.appendText(newGame.playersArray.get(i).name + " has: " + newGame.playersArray.get(i).money);
-											
-										} else if(newGame.playersArray.get(i).hand.result.equals("draw")) {
-											
-											enterTxtArea.appendText("\n");
-											enterTxtArea.appendText(newGame.playersArray.get(i).name + " has: " + newGame.playersArray.get(i).money);
-											
-										}
-									
-									
-									}
-								}
+					}	
 								
-			} else if (eventCount == 5) {
-					
-			
-				}
+					//runs dealer events and displays updated money		
+					if((hitCounter == newGame.players) && (newGame.playersArray.get(hitCounter-1).doneHitOrStand = true)) {
 						
-			}}
+						eventCount++;
+						newGame.dealerEvents();
+						enterTxtArea.appendText("\n");
+						enterTxtArea.appendText("Dealer has: " + newGame.dealer.toString());
+						enterTxtArea.appendText("\n");
+						enterTxtArea.appendText(Integer.toString(newGame.dealer.finalTotal));
+						newGame.distributeBets();
+									
+						for(int i = 0; i < newGame.playersArray.size(); i++) {
+										
+							if(newGame.playersArray.get(i).hand.result.equals("win")) {
+											
+								newGame.playersArray.get(i).addMoney(newGame.playersArray.get(i).hand.getBet());
+								enterTxtArea.appendText("\n");
+								enterTxtArea.appendText(newGame.playersArray.get(i).name + " has: " + newGame.playersArray.get(i).money);
+											
+							} 
+							
+							else if(newGame.playersArray.get(i).hand.result.equals("lose")) {
+											
+								newGame.playersArray.get(i).minusMoney(newGame.playersArray.get(i).hand.getBet());
+								enterTxtArea.appendText("\n");
+								enterTxtArea.appendText(newGame.playersArray.get(i).name + " has: " + newGame.playersArray.get(i).money);
+											
+							} else if(newGame.playersArray.get(i).hand.result.equals("draw")) {
+											
+								enterTxtArea.appendText("\n");
+								enterTxtArea.appendText(newGame.playersArray.get(i).name + " has: " + newGame.playersArray.get(i).money);
+											
+							}
+									
+						}
+					}
+								
+				} 
+						
+			}
 			
-			
-		);
-	
+		});
 	
 		startBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
 				if(eventCount == 0) {
+					
 					eventCount++;
 					enterTxtArea.setText(newGame.gameInstructions());
 					newGame.initializeDeckAndShuffle();
@@ -270,13 +260,17 @@ public class BlackjackMain extends Application implements Initializable {
 					
 				}
 			}
+			
 		});
+		
 		newRoundBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				
 				if(eventCount == 5) {
+					
 					newGame.initializeDeckAndShuffle();
+					
 					for(int i = 0; i < newGame.playersArray.size(); i++) {
 						
 						if(newGame.playersArray.get(i).money<=0) {
@@ -284,45 +278,45 @@ public class BlackjackMain extends Application implements Initializable {
 							enterTxtArea.appendText(newGame.playersArray.get(i).name + " you have no more money, game over!");
 							newGame.playersArray.remove(i);
 							i = i - 1;
+							
 						}
-						
-						
-						
+			
 					}
 					
 					if(newGame.playersArray.size()!=0) {
+						
 						enterTxtArea.appendText("\n");
 						enterTxtArea.appendText("NEW ROUND");
+						
 						for(int a = 0; a < newGame.playersArray.size();a++) {
+							
 							newGame.playersArray.get(a).hand.clearHand();
 							newGame.dealer.clearHand();
 							newGame.playersArray.get(a).doneHitOrStand = false;
 						
 						}
 					
-				}
-					
-						newGame.players = newGame.playersArray.size();
-						eventCount = 2; 
-						grabNames = true;
-						grabBets = false;
-						betCounter = 0;
-						hitCounter = 0;
-						
 					}
-				
 					
+					newGame.players = newGame.playersArray.size();
+					eventCount = 2; 
+					grabNames = true;
+					grabBets = false;
+					betCounter = 0;
+					hitCounter = 0;
+						
 				}
+					
+			}
 				
-		
 		});
-		
-
-		
+	
 	}
 	
 	public static void main(String[] args) {
+		
 		launch(args);	
+		
 	}
 
 	
